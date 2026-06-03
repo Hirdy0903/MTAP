@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const authRoutes = require('./modules/auth/auth.routes');
 
@@ -9,6 +10,11 @@ const issueRoutes = require('./modules/issues/issue.routes');
 const errorMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
+
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  credentials: true
+}));
 
 app.use(express.json());
 
