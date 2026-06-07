@@ -11,17 +11,22 @@ const errorMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
 
+
+
 // app.use(cors({
-//   origin: ['http://localhost:5173', 'http://localhost:5174'],
+//   origin: [
+//     'http://localhost:5173', 
+//     'http://localhost:5174',
+//     'https://multitenant-airij8yk6-hirdyproject.vercel.app' // Your live Vercel frontend
+//   ],
 //   credentials: true
 // }));
 
 app.use(cors({
-  origin: [
-    'http://localhost:5173', 
-    'http://localhost:5174',
-    'https://multitenant-airij8yk6-hirdyproject.vercel.app' // Your live Vercel frontend
-  ],
+  origin: function (origin, callback) {
+    // This automatically approves whatever domain is knocking on your backend's door
+    callback(null, true);
+  },
   credentials: true
 }));
 
