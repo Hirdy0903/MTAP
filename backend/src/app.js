@@ -11,10 +11,20 @@ const errorMiddleware = require('./middlewares/error.middleware');
 
 const app = express();
 
+// app.use(cors({
+//   origin: ['http://localhost:5173', 'http://localhost:5174'],
+//   credentials: true
+// }));
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: [
+    'http://localhost:5173', 
+    'http://localhost:5174',
+    'https://multitenant-airij8yk6-hirdyproject.vercel.app' // Your live Vercel frontend
+  ],
   credentials: true
 }));
+
 
 app.use(express.json());
 
