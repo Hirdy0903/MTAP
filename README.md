@@ -1,174 +1,186 @@
-Why I Built This Project
-
-Write:
+1. Project Overview
+# Jira-Like Multi-Tenant SaaS Backend
 
 This is my first serious backend engineering project.
 
-The goal was not to clone Jira completely.
+The goal of this project was not to clone Jira completely but to learn:
 
-The goal was to learn:
-
-- Backend architecture
+- Backend Architecture
 - Authentication
 - JWT
 - Authorization
-- Multi-tenancy
+- Multi-Tenancy
 - RBAC
-- Middleware design
-- MongoDB relationships
-- SaaS architecture
+- Middleware Design
+- MongoDB Relationships
+- SaaS Architecture
 
-while building a practical project.
-Section 2
-Architecture Decisions
+Tech Stack:
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcrypt
+2. What I Built Chronologically
 
-Document every decision.
+Ye sabse important section hai.
 
-Example:
-
-### Why Node.js + Express
-
-Simple ecosystem.
-Large community.
-Good for learning backend fundamentals.
-
-### Why MongoDB
-
-Flexible schema design.
-Easy to iterate during MVP stage.
-
-### Why Module Based Architecture
-
-Keeps code organized by feature.
-
-### Why Membership Model
-
-A user can belong to multiple organizations.
-
-### Why organizationId Everywhere
-
-To achieve tenant isolation.
-
-### Why Nested Routes
-
-Resources naturally belong to parent resources.
-Section 3
-Build Timeline
-
-This is the MOST valuable section.
-
-Day 1
-Express Setup
-MongoDB Connection
-Environment Variables
+Phase 1
+│
+├── Express Setup
+├── MongoDB Connection
+├── Environment Variables
+├── server.js
+└── app.js
 
 Learned:
+- Server startup flow
+- Express application flow
 
-Server startup flow
-Database connection lifecycle
-Day 2
-asyncHandler
-Global Error Middleware
+↓
 
-Learned:
-
-How Express handles async errors
-Day 3
-User Model
-Signup API
-Login API
-bcrypt
-JWT
+Phase 2
+│
+├── asyncHandler
+└── Error Middleware
 
 Learned:
+- Async error handling
+- Express middleware chain
 
-Authentication
-Password Security
-JWT Lifecycle
-Day 4
-Auth Middleware
-Protected Routes
+↓
 
-Learned:
-
-Request Authentication
-Authorization Headers
-req.user
-Day 5
-Organization Model
-Membership Model
-Organization APIs
+Phase 3
+│
+├── User Model
+├── Signup API
+├── Login API
+├── Password Hashing
+└── JWT Generation
 
 Learned:
+- Authentication
+- Password Security
 
-Multi-Tenant Architecture
-Day 6
-RBAC
-Role Middleware
-Projects Module
+↓
 
-Learned:
-
-Permission Systems
-Day 7
-Issues Module
+Phase 4
+│
+├── Auth Middleware
+└── Protected Routes
 
 Learned:
+- JWT Verification
+- Authorization Headers
+- req.user
 
-Real SaaS Resource Hierarchy
-Section 4
-Complete Request Lifecycle
-Client Request
-      │
-      ▼
+↓
+
+Phase 5
+│
+├── Organization Model
+├── Membership Model
+├── Create Organization API
+└── Get Organizations API
+
+Learned:
+- Multi-Tenancy
+- SaaS Data Isolation
+
+↓
+
+Phase 6
+│
+├── Organization Middleware
+├── Role Middleware
+└── RBAC
+
+Learned:
+- Access Control
+- Tenant Security
+
+↓
+
+Phase 7
+│
+├── Project Model
+├── Create Project
+├── Get Projects
+├── Update Project
+└── Delete Project
+
+Learned:
+- Nested Resources
+- Tenant Filtering
+
+↓
+
+Phase 8
+│
+├── Issue Model
+├── Create Issue
+├── Get Issues
+├── Update Issue
+└── Delete Issue
+
+Learned:
+- Jira Core Functionality
+3. Folder Structure
+backend/
+│
+├── config/
+│   └── db.js
+│
+├── middlewares/
+│   ├── auth.middleware.js
+│   ├── organization.middleware.js
+│   ├── role.middleware.js
+│   └── error.middleware.js
+│
+├── modules/
+│   ├── auth/
+│   ├── organizations/
+│   ├── projects/
+│   └── issues/
+│
+├── utils/
+│   └── asyncHandler.js
+│
+├── app.js
+└── server.js
+4. Complete Request Lifecycle
+Client
+  │
+  ▼
 app.js
-      │
-      ▼
+  │
+  ▼
 Route
-      │
-      ▼
-Auth Middleware
-      │
-      ▼
-Organization Middleware
-      │
-      ▼
-Role Middleware
-      │
-      ▼
+  │
+  ▼
+Middleware
+  │
+  ▼
 Controller
-      │
-      ▼
+  │
+  ▼
 Model
-      │
-      ▼
+  │
+  ▼
 MongoDB
-      │
-      ▼
+  │
+  ▼
 Response
-
-Then explain every step.
-
-Section 5
-Authentication Deep Dive
-Files
-auth.model.js
-auth.controller.js
-auth.routes.js
-auth.middleware.js
-Signup Flow
-Request
-   │
-   ▼
-Validate Data
+5. Authentication Flow
+Signup
    │
    ▼
 Hash Password
    │
    ▼
 Store User
-Login Flow
-Request
+Login
    │
    ▼
 Find User
@@ -180,65 +192,64 @@ Compare Password
 Generate JWT
    │
    ▼
-Send Token
-Protected Route Flow
-Request
+Return Token
+Protected Route
    │
    ▼
-Authorization Header
+Auth Header
    │
    ▼
-JWT Verify
+Verify JWT
    │
    ▼
 Find User
    │
    ▼
 Attach req.user
-Section 6
-Multi-Tenancy Deep Dive
-
-This should be one of the biggest sections.
-
-Explain:
-
-Without Multi-Tenancy
-
-Company A
-Company B
-
-All data mixed together
-
-vs
-
-With Multi-Tenancy
-
-Organization A
-Organization B
-
-Data isolated
-
-Explain:
-
-organizationId
-
-is the most important field.
-
-Section 7
-Membership System
-
-Explain why Organization alone was not enough.
+6. Multi-Tenancy Flow
+User
+ │
+ ▼
+Organization
+ │
+ ▼
+Membership
+ │
+ ▼
+Role
+ │
+ ▼
+Projects
+ │
+ ▼
+Issues
+7. Database Relationships
+User
+ │
+ │ 1:N
+ ▼
+Membership
+ │
+ │ N:1
+ ▼
+Organization
+ │
+ │ 1:N
+ ▼
+Project
+ │
+ │ 1:N
+ ▼
+Issue
+8. Why Membership Model Exists
 
 Problem:
 
 One User
-Multiple Organizations
+can belong to
+multiple organizations
 
 Solution:
-
-Membership Collection
-
-Relationship:
 
 User
  │
@@ -247,32 +258,39 @@ Membership
  │
  ▼
 Organization
-Section 8
-RBAC Deep Dive
 
-Explain:
+Membership stores:
 
-Admin
-Member
-
-and:
-
-roleMiddleware()
-
-flow.
-
-Section 9
-Projects Module
-
-For every controller function write:
-
+userId
+organizationId
+role
+9. RBAC Flow
+Request
+ │
+ ▼
+Organization Middleware
+ │
+ ▼
+Membership Found
+ │
+ ▼
+roleMiddleware
+ │
+ ├── admin
+ │      ▼
+ │   Allow
+ │
+ └── member
+        ▼
+   Restrict
+10. Project Module
 createProject()
 
 Purpose:
 
 Create project inside organization.
 
-Concepts learned:
+Learned:
 
 RBAC
 Tenant Isolation
@@ -280,9 +298,9 @@ getProjects()
 
 Purpose:
 
-Retrieve organization projects.
+Get organization projects.
 
-Concepts learned:
+Learned:
 
 Tenant Filtering
 getSingleProject()
@@ -291,7 +309,7 @@ Purpose:
 
 Secure project access.
 
-Concepts learned:
+Learned:
 
 IDOR Prevention
 updateProject()
@@ -303,53 +321,124 @@ deleteProject()
 
 Purpose:
 
-Remove project.
-Section 10
-Issues Module
+Delete project.
+11. Issue Module
+createIssue()
 
-Do exactly same.
+Purpose:
 
-Document every controller.
+Create issue inside project.
+getIssues()
 
-Section 11
-Security Concepts Learned
+Purpose:
 
-Document:
+Get all project issues.
+getSingleIssue()
 
-Password Hashing
+Purpose:
 
-Why:
+Secure issue access.
+updateIssue()
 
-Never store plaintext passwords.
+Purpose:
+
+Update issue.
+deleteIssue()
+
+Purpose:
+
+Delete issue.
+12. Most Important Concepts Learned
 JWT
+Login
+→ Generate Token
+→ Send Token
+→ Verify Token
+→ req.user
+Multi-Tenancy
+organizationId
 
-Why:
+is used to isolate tenant data.
 
-Stateless authentication.
-Tenant Isolation
-
-Why:
-
-Prevent cross-company data access.
 RBAC
+membership.role
 
-Why:
+controls permissions.
 
-Control actions based on role.
-Middleware
+Middleware Chaining
+Request
+│
+├── Auth Middleware
+├── Organization Middleware
+├── Role Middleware
+└── Controller
+Tenant Filtering
 
-Why:
+Always:
 
-Separate concerns.
-Section 12
-Biggest Learnings
+{
+   _id: resourceId,
+   organization: organizationId
+}
 
-Write your own reflections:
+Never:
 
-- First time implementing JWT.
-- First time implementing RBAC.
-- First time building a multi-tenant backend.
-- Learned middleware chaining.
-- Learned request lifecycle.
-- Learned MongoDB relationships.
-- Learned SaaS architecture basics.
+findById(resourceId)
+
+alone.
+
+13. Revision Order (MOST IMPORTANT)
+
+Whenever revisiting project:
+
+1. server.js
+2. app.js
+3. db.js
+4. asyncHandler.js
+5. error.middleware.js
+
+AUTH
+6. auth.model.js
+7. auth.controller.js
+8. auth.routes.js
+9. auth.middleware.js
+
+MULTI TENANCY
+10. organization.model.js
+11. membership.model.js
+12. organization.controller.js
+13. organization.middleware.js
+
+RBAC
+14. role.middleware.js
+
+PROJECTS
+15. project.model.js
+16. project.controller.js
+17. project.routes.js
+
+ISSUES
+18. issue.model.js
+19. issue.controller.js
+20. issue.routes.js
+14. Future Improvements
+Validation
+Pagination
+Rate Limiting
+Helmet
+Redis
+File Uploads
+Notifications
+Caching
+Final Learning Outcome
+✔ Backend Architecture
+✔ JWT Authentication
+✔ Authorization
+✔ Middleware Design
+✔ MongoDB Relationships
+✔ Multi-Tenancy
+✔ RBAC
+✔ SaaS Backend Thinking
+✔ Nested Routing
+✔ Secure API Design
+
