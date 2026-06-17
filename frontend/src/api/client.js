@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'https://multitenant-backend.onrender.com/api/v1',
+  baseURL: import.meta.env.VITE_API_URL || 'https://multitenant-ye4g.onrender.com/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
