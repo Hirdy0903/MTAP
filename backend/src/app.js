@@ -22,14 +22,25 @@ const app = express();
 //   credentials: true
 // }));
 
-app.use(cors({
-  origin: function (origin, callback) {
-    // This automatically approves whatever domain is knocking on your backend's door
-    callback(null, true);
-  },
-  credentials: true
-}));
 
+const allowedOrigins = [
+  "https://multitenant-theta.vercel.app",
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,,
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
